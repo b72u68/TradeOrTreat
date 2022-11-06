@@ -49,7 +49,7 @@ transactionRoutes.route("/transaction/complete/:id").get(function (req, res) {
   let db_connect = dbo.getDb("TradeOrTreat");
   db_connect
     .collection("Transaction")
-    .find({ _id: id })
+    .find({ _id: ObjectId(id) })
     .toArray(function (err, result) {
       if (err) throw err;
       const offer = result.offer;
