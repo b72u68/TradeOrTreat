@@ -1,5 +1,5 @@
 const accountSid = "ACc8305982c710a57b3c1d64237fde898f";
-const authToken = "501fcb474647a710dc725c2fa6fc024d";
+const authToken = "ef827a12034b4f677a2246fd1502eb8b";
 const client = require("twilio")(accountSid, authToken);
 
 const TWILLIO_NUMBER = "+19016574696";
@@ -21,7 +21,10 @@ function sendFinishTransaction(offer, deal, seller, buyer) {
       from: TWILLIO_NUMBER,
       to: seller.number,
     })
-    .then((message) => console.log(message.sid));
+    .then((message) => {
+      console.log(message.sid);
+      return message.sid;
+    });
 
   client.messages
     .create({
@@ -29,7 +32,10 @@ function sendFinishTransaction(offer, deal, seller, buyer) {
       from: TWILLIO_NUMBER,
       to: buyer.number,
     })
-    .then((message) => console.log(message.sid));
+    .then((message) => {
+      console.log(message.sid);
+      return message.sid;
+    });
 }
 
 module.exports = {

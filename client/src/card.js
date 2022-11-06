@@ -22,17 +22,17 @@ const CARD_PROPERTY = {
 };
 
 export default function CandyCard(props) {
-  const { name, img } = props;
-  const [count, setCount] = React.useState(0)
-  const [offer, setOffer] = React.useState("");
+  const { offer, want, buyer, seller } = props;
+  const [count, setCount] = React.useState(0);
+  const [deal, setDeal] = React.useState(want.length ? want[0] : "");
 
   const handleChange = (event) => {
-    setOffer(event.target.value);
+    setDeal(event.target.value);
   };
 
   return (
     <Card className="card" sx={CARD_PROPERTY} style={{ margin: "10px" }}>
-      <CardMedia component="img" height="194" image={img} />
+      <CardMedia component="img" height="194" image={offer.imgSrc} />
       <CardContent sx={{ p: 3 }}>
         <Typography
           gutterBottom
@@ -40,7 +40,7 @@ export default function CandyCard(props) {
           sx={{ fontWeight: "bold" }}
           component="div"
         >
-          {name}
+          {offer.name}
         </Typography>
         <Typography className="info" variant="body1" color="text.secondary">
           Candy is good because it is often bright colors, which are attractive
@@ -53,22 +53,18 @@ export default function CandyCard(props) {
           <Select
             labelId="demo-simple-select-autowidth-label"
             id="demo-simple-select-autowidth"
-            value={offer}
+            value={deal}
             onChange={handleChange}
             label="Offer"
           >
-            <MenuItem value="">
-              <em>Pick Candy</em>
-            </MenuItem>
-            <MenuItem value={"Snickers"}>Snickers</MenuItem>
-            <MenuItem value={"Twix"}>Twix</MenuItem>
-            <MenuItem value={"Kit kat"}>Kit kat</MenuItem>
-            <MenuItem value={"Reese's Cups"}>Reese's Cups</MenuItem>
-            <MenuItem value={"Skittles"}>Skittles</MenuItem>
-            <MenuItem value={"Starburst"}>Starburst</MenuItem>
+            {want.map((candy, k) => (
+              <MenuItem key={k} value={candy}>
+                {candy}
+              </MenuItem>
+            ))}
           </Select>
-          <GroupedButtons setCount={setCount}/>
-          <OfferModal candy={offer} count={count} />
+          <GroupedButtons setCount={setCount} />
+          <OfferModal candy={deal} count={count} />
         </FormControl>
       </CardActions>
     </Card>

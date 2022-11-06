@@ -11,7 +11,7 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-postingRoutes.route("/user/:id").get(function (req, response) {
+userRoutes.route("/user/:id").get(function (req, response) {
   console.log("Fetching user...");
   let db_connect = dbo.getDb("TradeOrTreat");
   db_connect.collection("User").find({ _id: ObjectId(id) }, (err, res) => {
@@ -20,7 +20,7 @@ postingRoutes.route("/user/:id").get(function (req, response) {
   });
 });
 
-postingRoutes.route("/user/create").get(function (req, response) {
+userRoutes.route("/user/create").get(function (req, response) {
   console.log("Creating new posting...");
   let db_connect = dbo.getDb("TradeOrTreat");
   db_connect.collection("User").insertOne(req.body.user, (err, res) => {
