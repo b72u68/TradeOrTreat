@@ -6,6 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+const QRcode = require('qrcode');
 
 const style = {
   position: "absolute",
@@ -24,7 +25,19 @@ export default function OfferModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const {user,candy} = props
+  console.log(props)
+  const handleGenerate =()=>{
+    const hiddenInfo = {
+      "Date": new Date(),
+      "Generated ID": 123,
+      "Candy": candy,
+      "Buyer": user
+    };
+    const encrypted = btoa(hiddenInfo);
+    <canvas id="qrcode"></canvas>
+    QRcode.toCanvas(document.getElementById("qrcode"), encrypted);
+  }
   return (
     <div>
       <Button
@@ -77,6 +90,7 @@ export default function OfferModal(props) {
     </TableContainer>
 
 
+            <Button onClick={handleGenerate}>Generate QR</Button>
           </Box>
         </Fade>
       </Modal>

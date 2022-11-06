@@ -14,7 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { ReactComponent as TrickIcon } from "../public/trick.svg";
+import { ReactComponent as TrickIcon } from "../src/Assets/trick.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Avatar, Button, Grid } from "@mui/material";
 
