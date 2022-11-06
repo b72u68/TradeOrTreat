@@ -8,15 +8,12 @@ const postingRoutes = express.Router();
 // This will help us connect to the database
 const dbo = require("../db/conn");
 
-// This help convert the id from string to ObjectId for the _id.
-const ObjectId = require("mongodb").ObjectId;
-
-postingRoutes.route("/posting").get(function (req, res) {
+postingRoutes.route("/posting").get(function (_, res) {
   console.log("Fetching postings...");
   let db_connect = dbo.getDb("TradeOrTreat");
   db_connect
     .collection("Posting")
-    .find({})
+    .find({ status: "active" })
     .toArray(function (err, result) {
       if (err) throw err;
       res.json(result);
