@@ -15,7 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import GroupedButtons from "./GroupedButtons";
 import OfferModal from "./modal";
-
+import { useAuth0 } from "@auth0/auth0-react";
 const CARD_PROPERTY = {
   borderRadius: 3,
   boxShadow: 0,
@@ -29,7 +29,8 @@ export default function CandyCard(props) {
   const handleChange = (event) => {
     setDeal(event.target.value);
   };
-
+  const { loginWithRedirect, logout, user, isLoading, isAuthenticated } =
+    useAuth0();
   return (
     <Card className="card" sx={CARD_PROPERTY} style={{ margin: "10px" }}>
       <CardMedia component="img" height="194" image={offer.imgSrc} />
@@ -64,7 +65,7 @@ export default function CandyCard(props) {
             ))}
           </Select>
           <GroupedButtons setCount={setCount} />
-          <OfferModal candy={deal} count={count} />
+          <OfferModal candy={offer} user={user} count={count} />
         </FormControl>
       </CardActions>
     </Card>

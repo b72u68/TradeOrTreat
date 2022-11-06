@@ -6,6 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+const QRcode = require('qrcode');
 
 const style = {
   position: "absolute",
@@ -22,9 +23,39 @@ const style = {
 export default function OfferModal(props) {
   const data = props;
   const [open, setOpen] = React.useState(false);
+  const [svg, setSvg] = React.useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {user,candy} = props;
+  var temp = document.createElement('div');
+  var t2 = temp.firstChild
+  //console.log(props)
+  const handleGenerate =()=>{
+    var hiddenInfo = {
+      'Date': new Date(),
+      'Generated_ID': 123,
+      'Candy': candy,
+      'Amount': props.count,
+      'Buyer': user.name
+    };
+    // const encrypted = btoa(hiddenInfo);
+    // <canvas id="code" width='150' height='150' ></canvas>
+    // QRcode.toCanvas(document.getElementById("code"), encrypted);
+    hiddenInfo = JSON.stringify(hiddenInfo);
+    var encrypt = btoa(hiddenInfo );
+    console.log(encrypt);
+    console.log("Time to decrypt!");
+    var decrypted_string = atob(encrypt);
+    // console.log(JSON.parse(encrypt));
+    QRcode.toDataURL("http://localhost:3000/thanks", function (err, url) {
+      console.log(url);
+      setSvg(url);
+      })
 
+    console.log("Candy sold: "+JSON.parse(decrypted_string).Amount);
+  
+  }
   return (
     <div>
       <Button
@@ -77,6 +108,10 @@ export default function OfferModal(props) {
     </TableContainer>
 
 
+            <Button onClick={handleGenerate}>Generate QR</Button>
+            <img src={svg}></img>
+            
+             
           </Box>
         </Fade>
       </Modal>
