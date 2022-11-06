@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { Auth0Provider } from "@auth0/auth0-react";
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Auth0Provider
-    domain="dev-l5ps7dejtkbx8xkr.us.auth0.com"
-    clientId="2n9JWqpkBOOd35T81mBvtwqlv6ptuIqa"
+    domain="dev-tzbgmzr1jkvbaqq8.us.auth0.com"
+    clientId="sfbIivgLSpQcDuvXC58kVOLbMYYQLCHP"
     redirectUri={window.location.origin}
   >
     <App />
