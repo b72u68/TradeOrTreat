@@ -16,6 +16,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { ReactComponent as TrickIcon } from "../public/trick.svg";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Avatar, Button, Grid } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,6 +60,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const { loginWithRedirect, logout, user, isLoading, isAuthenticated } =
+    useAuth0();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -108,10 +113,38 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {isAuthenticated ? null : (
+        <MenuItem onClick={() => loginWithRedirect()}>LOG IN</MenuItem>
+      )}
+      {isAuthenticated ? (
+        <div>
+          <Grid>
+            <Grid item xs={6}>
+              <Avatar
+                alt="Remy Sharp"
+                src={user.picture}
+                sx={{ marginLeft: 7, width: 75, height: 75 }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography sx={{ padding: 1, fontFamily: "sans-serif" }}>
+                {" "}
+                {user.name}{" "}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Button
+            onClick={() => logout({ returnTo: window.location.origin })}
+            sx={{ marginLeft: 6 }}
+            variant="outlined"
+          >
+            LOG OUT
+          </Button>
+        </div>
+      ) : null}
     </Menu>
   );
+  // console.log(user)
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
