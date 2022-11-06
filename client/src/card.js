@@ -65,7 +65,7 @@ export default function CandyCard(props) {
             ))}
           </Select>
           <GroupedButtons setCount={setCount} />
-          <OfferModal candy={offer} user={user} count={count} />
+          <OfferModal candy={deal} user={user} count={count} />
         </FormControl>
       </CardActions>
     </Card>

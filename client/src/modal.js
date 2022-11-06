@@ -5,8 +5,16 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-const QRcode = require('qrcode');
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+const QRcode = require("qrcode");
 
 const style = {
   position: "absolute",
@@ -27,23 +35,20 @@ export default function OfferModal(props) {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user,candy} = props;
-  var temp = document.createElement('div');
-  var t2 = temp.firstChild
+  const { user, candy } = props;
+  var temp = document.createElement("div");
+  var t2 = temp.firstChild;
   //console.log(props)
-  const handleGenerate =()=>{
+  const handleGenerate = () => {
     var hiddenInfo = {
-      'Date': new Date(),
-      'Generated_ID': 123,
-      'Candy': candy,
-      'Amount': props.count,
-      'Buyer': user.name
+      Date: new Date(),
+      Generated_ID: 123,
+      Candy: candy,
+      Amount: props.count,
+      Buyer: user.name,
     };
-    // const encrypted = btoa(hiddenInfo);
-    // <canvas id="code" width='150' height='150' ></canvas>
-    // QRcode.toCanvas(document.getElementById("code"), encrypted);
     hiddenInfo = JSON.stringify(hiddenInfo);
-    var encrypt = btoa(hiddenInfo );
+    var encrypt = btoa(hiddenInfo);
     console.log(encrypt);
     console.log("Time to decrypt!");
     var decrypted_string = atob(encrypt);
@@ -51,11 +56,10 @@ export default function OfferModal(props) {
     QRcode.toDataURL("http://localhost:3000/thanks", function (err, url) {
       console.log(url);
       setSvg(url);
-      })
+    });
 
-    console.log("Candy sold: "+JSON.parse(decrypted_string).Amount);
-  
-  }
+    console.log("Candy sold: " + JSON.parse(decrypted_string).Amount);
+  };
   return (
     <div>
       <Button
@@ -85,33 +89,39 @@ export default function OfferModal(props) {
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Here is your offer summary!
             </Typography>
-            
+
             <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Candy</TableCell>
-            <TableCell align="right">Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            <TableRow
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Candy</TableCell>
+                    <TableCell align="right">Amount</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {props.candy}
+                    </TableCell>
+                    <TableCell align="right">{props.count}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <Button
+              sx={{
+                display: "block",
+                margin: "auto",
+                padding: "10px",
+              }}
+              onClick={handleGenerate}
             >
-              <TableCell component="th" scope="row">
-                {props.candy}
-              </TableCell>
-              <TableCell align="right">{props.count}</TableCell>
-            </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
-
-
-            <Button onClick={handleGenerate}>Generate QR</Button>
-            <img src={svg}></img>
-            
-             
+              Generate QR
+            </Button>
+            <img src={svg} alt="QR CODE" />
           </Box>
         </Fade>
       </Modal>
