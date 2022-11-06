@@ -23,6 +23,7 @@ const CARD_PROPERTY = {
 
 export default function CandyCard(props) {
   const { name, img } = props;
+  const [count, setCount] = React.useState(0)
   const [offer, setOffer] = React.useState("");
 
   const handleChange = (event) => {
@@ -66,8 +67,8 @@ export default function CandyCard(props) {
             <MenuItem value={"Skittles"}>Skittles</MenuItem>
             <MenuItem value={"Starburst"}>Starburst</MenuItem>
           </Select>
-          <GroupedButtons />
-          <OfferModal />
+          <GroupedButtons setCount={setCount}/>
+          <OfferModal candy={offer} count={count} />
         </FormControl>
       </CardActions>
     </Card>
