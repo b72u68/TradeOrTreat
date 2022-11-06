@@ -121,7 +121,9 @@ export default function OfferModal(props) {
             >
               Generate QR
             </Button>
-            <img src={svg} alt="QR CODE" />
+            <a href="/thanks">
+              <img src={svg} alt="" />
+            </a>
           </Box>
         </Fade>
       </Modal>
