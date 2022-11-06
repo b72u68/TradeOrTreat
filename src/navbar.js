@@ -15,7 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import AdbIcon from "@mui/icons-material/Adb";
+import { ReactComponent as TrickIcon } from "../public/trick.svg";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -169,7 +169,10 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <TrickIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            style={{ width: "50px", height: "50px", padding: "10px" }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -196,9 +199,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
+            ></IconButton>
           </Box>
           <Search>
             <SearchIconWrapper>
