@@ -1,4 +1,8 @@
 const express = require("express");
+const {
+  sendFinishTransaction,
+  sendConfirmTransaction,
+} = require("./messageSystem");
 
 // postingRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -14,51 +18,47 @@ const ObjectId = require("mongodb").ObjectId;
 transactionRoutes.route("/transaction/create").get(function (req, response) {
   console.log("Creating new posting...");
   let db_connect = dbo.getDb("TradeOrTreat");
-  const posting = req.body.postingId;
-  const buyerId = req.body.buyerId;
+  const offer = req.body.posting.offer;
   const deal = req.body.deal;
+  const seller = req.body.posting.seller;
+  const buyer = req.body.buyer;
+  const location = req.body.posting.location;
   db_connect
     .collection("Transaction")
-    .insertOne({ posting, buyerId, deal }, (err, res) => {
+    .insertOne({ offer, deal, seller, buyer, location }, (err, res) => {
       if (err) throw err;
       response.json(res);
+      sendConfirmTransaction(offer, deal, seller, buyer);
     });
 });
 
-transactionRoutes.route("/transaction/buy").get(function (req, res) {
-  console.log("Fetching bought transaction...");
+transactionRoutes.route("/transaction/user/:id").get(function (req, res) {
+  console.log("Fetching user transaction...");
   let db_connect = dbo.getDb("TradeOrTreat");
-  const currUserId = req.userId;
   db_connect
     .collection("Transaction")
-    .find({ buyerId: ObjectId(currUserId) })
+    .find({ buyer: { id: ObjectId(id) } }, { seller: { id: ObjectId(id) } })
     .toArray(function (err, result) {
       if (err) throw err;
       res.json(result);
     });
 });
 
-transactionRoutes.route("/transaction/offer").get(function (req, res) {
-  console.log("Fetching offering transaction...");
+transactionRoutes.route("/transaction/complete/:id").get(function (req, res) {
+  console.log("Finishing transaction...");
   let db_connect = dbo.getDb("TradeOrTreat");
-  const currUserId = req.userId;
-  let postingIds = [];
-  db_connect
-    .collection("Posting")
-    .find({ sellerId: ObjectId(currUserId) })
-    .toArray(function (err, result) {
-      if (err) throw err;
-      result.map((p, _) => {
-        postingIds.push(p._id);
-      });
-    });
   db_connect
     .collection("Transaction")
-    .find({ postingId: { $in: postingIds } })
+    .find({ _id: ObjectId(id) })
     .toArray(function (err, result) {
       if (err) throw err;
+      const offer = result.offer;
+      const deal = result.deal;
+      const seller = result.seller;
+      const buyer = result.buyer;
       res.json(result);
+      sendFinishTransaction(offer, deal, seller, buyer);
     });
 });
 
-module.exports = postingRoutes;
+module.exports = transactionRoutes;

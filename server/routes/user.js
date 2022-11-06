@@ -29,4 +29,4 @@ postingRoutes.route("/user/create").get(function (req, response) {
   });
 });
 
-module.exports = postingRoutes;
+module.exports = userRoutes;
