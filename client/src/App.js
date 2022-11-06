@@ -26,28 +26,25 @@ export default function App() {
 
   const [postings, setPostings] = useState([]);
 
-  useEffect(() => {
-    async function getPostings() {
-      const response = await fetch("http://localhost:5000/posting");
+  async function getPostings() {
+    const response = await fetch("http://localhost:5000/posting");
 
-      if (!response.ok) {
-        window.alert(`An error occurred: ${response.statusText}`);
-        return;
-      }
-
-      const postingsRes = await response.json();
-
-      if (!postingsRes) {
-        window.alert(`An error occurred: ${response.statusText}`);
-        return;
-      }
-
-      setPostings(postingsRes);
+    if (!response.ok) {
+      window.alert(`An error occurred: ${response.statusText}`);
+      return;
     }
-    getPostings();
-    return;
-  }, [postings]);
 
+    const postingsRes = await response.json();
+
+    if (!postingsRes) {
+      window.alert(`An error occurred: ${response.statusText}`);
+      return;
+    }
+
+    setPostings(postingsRes);
+  }
+
+  getPostings();
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -90,7 +87,9 @@ export default function App() {
               variant="outlined"
             >
               <Typography
-                onClick={() => loginWithRedirect()}
+                onClick={() => {
+                  loginWithRedirect();
+                }}
                 sx={{ fontSize: 50, opacity: 1 }}
               >
                 TRADE OR TREAT
