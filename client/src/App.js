@@ -1,4 +1,5 @@
 import "./styles.css";
+import React, { useState, useEffect } from "react";
 import CandyCard from "./card";
 import Navbar from "./navbar";
 import { Button, Grid, Paper, Typography } from "@mui/material";
@@ -19,26 +20,33 @@ const theme = createTheme({
   },
 });
 
-const candies = [
-  {
-    id: 1,
-    name1: "Kit Kat",
-    img1: "https://www.germanshop24.com/images/thumbnails/1024/1024/detailed/16/F090001450.jpg",
-    name2: "Sour Patch",
-    img2: "https://m.media-amazon.com/images/I/81SFEy-bzlL.jpg",
-  },
-  {
-    id: 2,
-    name1: "Sour Patch",
-    img1: "https://m.media-amazon.com/images/I/81SFEy-bzlL.jpg",
-    name2: "Kit Kat",
-    img2: "https://www.germanshop24.com/images/thumbnails/1024/1024/detailed/16/F090001450.jpg",
-  },
-];
-
 export default function App() {
   const { loginWithRedirect, logout, user, isLoading, isAuthenticated } =
     useAuth0();
+
+  const [postings, setPostings] = useState([]);
+
+  useEffect(() => {
+    async function getPostings() {
+      const response = await fetch("http://localhost:5000/posting");
+
+      if (!response.ok) {
+        window.alert(`An error occurred: ${response.statusText}`);
+        return;
+      }
+
+      const postingsRes = await response.json();
+
+      if (!postingsRes) {
+        window.alert(`An error occurred: ${response.statusText}`);
+        return;
+      }
+
+      setPostings(postingsRes);
+    }
+    getPostings();
+    return;
+  }, [postings]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,10 +58,12 @@ export default function App() {
         {/* <h2>Start editing to see some magic happen!</h2> */}
         {isAuthenticated ? (
           <Grid container spacing={6} rowSpacing={2} columns={12}>
-            {candies.map(({ name1, name2, img1, img2 }) => (
-              <Grid item xs={6}>
-                <CandyCard name={name1} img={img1} />
-                <CandyCard name={name2} img={img2} />
+            {postings.map((posting) => (
+              <Grid key={posting._id} item xs={6}>
+                <CandyCard
+                  name={posting.offer.name}
+                  img={posting.offer.imgSrc}
+                />
               </Grid>
             ))}
           </Grid>
