@@ -5,7 +5,6 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  Button,
   CardActions,
 } from "@mui/material";
 
@@ -22,15 +21,16 @@ const CARD_PROPERTY = {
 };
 
 export default function CandyCard(props) {
-  const { offer, want, buyer, seller } = props;
+  const { offer, want } = props;
   const [count, setCount] = React.useState(0);
   const [deal, setDeal] = React.useState(want.length ? want[0] : "");
 
   const handleChange = (event) => {
     setDeal(event.target.value);
   };
-  const { loginWithRedirect, logout, user, isLoading, isAuthenticated } =
-    useAuth0();
+
+  const { user } = useAuth0();
+
   return (
     <Card className="card" sx={CARD_PROPERTY} style={{ margin: "10px" }}>
       <CardMedia component="img" height="194" image={offer.imgSrc} />

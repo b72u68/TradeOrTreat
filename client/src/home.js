@@ -20,30 +20,24 @@ const theme = createTheme({
 });
 
 export default function Home() {
-  const { loginWithRedirect, logout, user, isLoading, isAuthenticated } =
-    useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
   const [postings, setPostings] = useState([]);
 
-  async function getPostings() {
-    const response = await fetch("http://localhost:5000/posting");
-
-    if (!response.ok) {
-      window.alert(`An error occurred: ${response.statusText}`);
-      return;
-    }
-
-    const postingsRes = await response.json();
-
-    if (!postingsRes) {
-      window.alert(`An error occurred: ${response.statusText}`);
-      return;
-    }
-
-    setPostings(postingsRes);
-  }
-
-  getPostings();
+  useEffect(() => {
+    fetch("http://localhost:5000/posting").then((response) => {
+      if (!response.ok) {
+        window.alert(`An error occurred: ${response.statusText}`);
+        return;
+      }
+      const postingsRes = response.json();
+      if (!postingsRes) {
+        window.alert(`An error occurred: ${response.statusText}`);
+        return;
+      }
+      setPostings(postingsRes);
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -55,16 +49,9 @@ export default function Home() {
         {/* <h2>Start editing to see some magic happen!</h2> */}
         {isAuthenticated ? (
           <Grid container spacing={6} rowSpacing={2} columns={12}>
-            {postings.map(({ offer, want, seller }) => (
+            {postings.map(({ offer, want }) => (
               <Grid item xs={6}>
-                <CandyCard
-                  offer={offer}
-                  name={offer.name}
-                  img={offer.imgSrc}
-                  want={want}
-                  seller={seller}
-                  buyer={{ name: user.name, phone: user.phone_number }}
-                />
+                <CandyCard offer={offer} want={want} />
               </Grid>
             ))}
           </Grid>
